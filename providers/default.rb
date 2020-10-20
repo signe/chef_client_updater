@@ -125,6 +125,12 @@ def current_version
     version = versions.match(/(ChefDK Version(.)*:)\s*([\d.]+)/i) || versions.match(/(Chef Development Kit Version(.)*:)\s*([\d.]+)/i)
 
     return version[-1].to_s.strip if version
+  when 'chef-workstation'
+    versions = Mixlib::ShellOut.new('chef -v').run_command.stdout # cookstyle: disable ChefModernize/ShellOutHelper
+    # There is a verbiage change in newer version of Chef Infra
+    version = versions.match(/(Chef Workstation version(.)*:)\s*([\d.]+)/i)
+
+    return version[-1].to_s.strip if version
   end
 end
 
